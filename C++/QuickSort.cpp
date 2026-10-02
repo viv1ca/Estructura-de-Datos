@@ -1,0 +1,65 @@
+#include <iostream>
+using namespace std;
+
+// función para intercambiar dos elementos en el arreglo
+void swap(int a[], int j, int k) {
+    int temp = a[j];
+    a[j] = a[k];
+    a[k] = temp; // intercambia los elementos
+}
+
+// Función para hacer la partición del arreglo
+int partition(int a[], int l, int h) {
+    // Selecciona el elemento pivote
+    int pivote = a[h];
+    // j es el indice de los elementos que son menores que el
+    // pivote y tambien indica la posición correcta del pivote encontrado hasta este momento
+    int j = l - 1;
+    // Recorre a[l...h-1] y mueve todos los elementos menores
+    // al lado izquierdo del pivote.
+
+    // Los elementos de l a j son mas pequeños después de cada iteración
+    for (int k = l; k < h; k++) { // recorre el arreglo
+        // Si el elemento actual es menor que el pivote
+        if (a[k] < pivote) { // compara el elemento actual con el pivote
+            j += 1; // incrementa el indice del elemento más pequeño
+            swap(a, j, k); // intercambia los elementos
+        }
+    }
+
+    // Mover el pivote despues de elementos mas pequeños y devolverlo a su posicion
+    swap(a, j + 1, h); // intercambia el pivote con el elemento siguiente al ultimo elemento mas pequeño
+    return j + 1; // devuelve el indice del pivote
+}
+
+// implementación de la función Quick Sort
+void qckSort(int a[], int l, int h) { // función principal de Quick-sort
+    if (l < h) { // si el indice izquierdo es menor que el derecho
+        // pi es el indice de partición, regresa el indice del pivote
+        int pi = partition(a, l, h); // particiona el arreglo
+
+        // llamadas recurisvas para los elemento menores y mayores o iguales a los elementos
+        qckSort(a, l, pi - 1); // llamada recursiva para los elementos menores que el pivote
+        qckSort(a, pi + 1, h); // llamada recursiva para los elementos mayores que el pivote
+    }
+}
+
+// Codigo para probar la implementación de Quick sort
+int main() { // punto de entrada del programa
+    int a[] = {10, 5, 35, 50, 15, 85, 25}; // arreglo desordenado
+    int size = sizeof(a) / sizeof(a[0]); // tamaño del arreglo
+    cout << "El arreglo antes de ordenarlo: " << endl;
+    for (int v : a) { // imprime el arreglo
+        cout << v << " ";
+    }
+    cout << endl; // salto de linea
+
+    qckSort(a, 0, size - 1);
+
+    cout << "El arreglo después de ordenarlo: " << endl;
+    for (int v : a) { // imprime el arreglo ordenado
+        cout << v << " ";
+    }
+
+    return 0;
+}
